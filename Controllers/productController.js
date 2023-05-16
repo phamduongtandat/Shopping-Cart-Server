@@ -6,7 +6,7 @@ const createProduct = async (req, res) => {
 
     try {
         const { name, image, type, price, countInStock, rating, desc, discount, selled } = req.body
-        if (!name || !image || !type || !price || !countInStock || !rating || !desc || !discount || !selled) {
+        if (!name || !image || !type || !price || !countInStock || !rating || !desc || !discount) {
             return res.status(400).json({
                 status: 0,
                 message: 'The input is required',
@@ -64,9 +64,60 @@ const getProductDetail = async (req, res) => {
     }
 }
 
+//       _____ UPDATA _____
+
+const updateProduct = async (req, res) => {
+    try {
+
+        const productId = req.params.id
+        const data = req.body
+        if (!productId) {
+            return res.status(400).json({
+                status: 0,
+                message: 'The productId is required'
+            })
+        }
+
+        const response = await productService.updateProduct(productId, data)
+        if (response.status === 0) {
+            return res.status(400).json(response)
+        }
+        return res.status(200).json(response)
+    } catch (err) {
+        return res.status(400).json({
+            status: 0,
+            message: err.message
+        })
+    }
+}
 
 
+//       _____ DELETE _____
+
+const deleteProduct = async (req, res) => {
+    try {
+        const productId = req.params.id
+        if (!productId) {
+            return res.status(400).json({
+                status: 0,
+                message: 'The productId is required'
+            })
+        }
+        const response = await productService.deleteProduct(productId)
+
+        if (response.status === 0) {
+            return res.status(400).json(response)
+        }
+
+        return res.status(200).json(response)
+    } catch (err) {
+        return res.status(400).json({
+            status: 0,
+            message: err.message
+        })
+    }
+}
 
 //       _____  EXPORT  _____ 
 
-module.exports = { createProduct, getProducts, getProductDetail }
+module.exports = { createProduct, getProducts, getProductDetail, updateProduct, deleteProduct }
