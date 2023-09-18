@@ -12,7 +12,7 @@ mongoose.connect(process.env.MONGODB_URL)
     .then(() => { console.log('DB connected') })
 
 //middlewares for express
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
+app.use(cors({ credentials: true, origin: 'https://shopping-cart-client.vercel.app' }))
 app.use(express.json())
 app.use(cookieParser())
 
